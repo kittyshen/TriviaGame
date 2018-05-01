@@ -7,14 +7,16 @@ html{
     margin:0;
     font-size:1em;
 }
-body{
+body {
     margin-bottom:90px;  /*important adding this margin if use "sticky footer" in bootstrap otherwise some content might get covered by footer space */
-    background-image:url("../images/waterBG.jpg") ;
-    /* background-image:url("../images/circles-dark.png"); */
+    background-image:url("../images/Flowers.jpg");
+    background-repeat: round;
     min-height:100%;
     color:white;
 }
-
+.container{
+    min-height:100%;
+}
 h1{
     font-size:2.3em;
     color:white;
@@ -24,8 +26,8 @@ h2{
     color:#66bce4;
 }
 h4{
-    font-size:1.8em ;
-    color:orange;
+    font-size:1.5em ;
+    color:#66bce4;
 }
 /* img{
     max-block-size: 230px;
@@ -66,8 +68,8 @@ h4{
     height:100px;
 }
 .jumbotron {
-    padding:1em;
-    margin-bottom:0.5em;
+    padding:0.5em;
+    margin-bottom:0.3em;
     box-shadow: 0.11em 0.11em rgb(146, 146, 146);
 }
 .container{

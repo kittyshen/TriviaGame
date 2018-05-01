@@ -19,3 +19,5 @@ Step15 How to build a timer to count down on timeLeft? refer to class activity s
 Step16 if timeLeft =0 show render next question, questionUnanswered++
 Step17 if user finished all 5 quiz, showing ending screen and add another button to reload a newGame();
 */
+
+
