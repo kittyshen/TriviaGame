@@ -20,4 +20,14 @@ Step16 if timeLeft =0 show render next question, questionUnanswered++
 Step17 if user finished all 5 quiz, showing ending screen and add another button to reload a newGame();
 */
 
+//trying to make a timer attemp one
+var startingTime = 30; // decalre a globe variable to capture the allowed time limite
 
+function timer(){
+    $("#timer").html(startingTime);  // update the html session of timer id with new timeLeft
+    startingTime--;
+    if(startingTime>=0){
+        setTimeout(timer,1000);     //recursion use of timer function every 1 second
+    }
+}
+timer(); //excute the timer
