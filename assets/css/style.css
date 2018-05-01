@@ -1,0 +1,103 @@
+/*basic styling page*/
+
+html{
+    font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+    line-height: 1.2;
+    height:100%;
+    margin:0;
+    font-size:1em;
+}
+body{
+    margin-bottom:90px;  /*important adding this margin if use "sticky footer" in bootstrap otherwise some content might get covered by footer space */
+    background-image:url("../images/waterBG.jpg") ;
+    /* background-image:url("../images/circles-dark.png"); */
+    min-height:100%;
+    color:white;
+}
+
+h1{
+    font-size:2.3em;
+    color:white;
+}
+h2{
+    font-size:2em;
+    color:#66bce4;
+}
+h4{
+    font-size:1.8em ;
+    color:orange;
+}
+/* img{
+    max-block-size: 230px;
+    float:left;
+    padding-right:1em;
+} */
+.footer{
+    clear: both;
+    height:80px;
+    background-color: dimgrey;
+    border-top: 8px solid #66bce4;
+    padding-top: 30px;
+    text-align:center;
+    font-size: 1em;
+}
+  
+
+/* adjust bootstrap elements to mimic the assignment format*/
+
+.header{
+    text-align: center;
+    margin: 0 auto;
+    padding: 0.3em 0;
+    background-color: dimgrey;
+    border: 0.3em solid #66bce4;
+    border-radius:.5em;
+
+}
+.row{
+    padding:0.8em;
+    margin-top: 1em;
+    background-color:rgba(211, 211, 211, 0.89) !important;
+}
+.col-md-4 > .jumbotron {
+    height:330px;
+}
+.col-sm-12 > .jumbotron {
+    height:100px;
+}
+.jumbotron {
+    padding:1em;
+    margin-bottom:0.5em;
+    box-shadow: 0.11em 0.11em rgb(146, 146, 146);
+}
+.container{
+    min-height:100%;
+    background-image:url("../images/water.jpg"); 
+}
+.card{
+    display: inline;
+    background-color: #e9ecef;
+    border-radius:.3rem;
+}
+
+@media(max-width:578px) {
+    .jumbotron{
+        max-width: 50% !important;
+        margin-bottom:0.2em;
+    }
+    h2{
+        font-size:1.5em;
+        color:#66bce4;
+    }
+    h1{
+        font-size:1.8em;
+    }
+    
+
+   .col-xs-6, .col-sm-6{
+        max-width: 50%;
+    }
+    .footer{
+        position: relative;
+    }
+}
