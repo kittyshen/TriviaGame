@@ -190,7 +190,7 @@ function endingScreen(buttonClicked){
     // if(buttonClicked == triviaBank[currentIndexArray[quizCounter]].Correct){  //if user got the right answer
     if(buttonClicked == triviaBank[currentIndexArray[quizCounter]].Correct ){  //if user got the right answer
         $("#rightOrWrong").text("Right!");
-        $("#quizContainer").html("<img src='assets/images/catRule.gif' alt = \"catpic\" >");
+        $("#quizContainer").html("<div style =\"margin-left: auto; margin-right: auto;text-align: center; display: table-cell;\"><img src='assets/images/catRule.gif' alt = \"catpic\" ></div>");
         pointerTimeOut = setTimeout(run,3000);
         right++;
     }
@@ -211,9 +211,12 @@ function endGame(){
 
 
 function run(){
+    stopInterval();  //is this the key causing the problem???????!!!!!!!
     pointerInterval = setInterval(timer,1000);
-    quizRender(triviaBank[currentIndexArray[quizCounter]]);
     console.log("run:" + quizCounter);
+
+    quizRender(triviaBank[currentIndexArray[quizCounter]]);
+    // console.log("run:" + quizCounter);
 }
 
 //define a timer to track the time
@@ -221,28 +224,26 @@ function timer(){
     console.log(timerCounter);
     timerCounter--;
     $("#timer").text(timerCounter);
-
     if(timerCounter == 0){  // if time runs out render next quiz question.
         unanswered ++;
         stopTimer();    //pause the timer
         stopInterval(); //clear last timeout event instance
-
+    
         timerCounter =10;
         if(quizCounter<5){
             endingScreen();
             pointerTimeOut = setTimeout(run,3000);
             console.log("quiz:"+quizCounter); 
             // quizCounter++;  
-
         }
         else // if run out of quiz questions, render gameFinishScreen
         {
             console.log("end here:  "+quizCounter); 
             endGame();
         }
-
     }
 }
+
 function stopTimer(){
     clearTimeout(pointerTimeOut);
 }
@@ -264,6 +265,7 @@ $(document).on("click",".button",function(){
 
 $(document).on("click","#Restart",function(){
     newGame();
+    run();      // forget this will causing the timer not starting after a new game session
 });
 
 
