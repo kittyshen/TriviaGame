@@ -120,7 +120,7 @@ var quizCounter =0; // initial the quizCounter
 var unanswered = 0;  // check how many quiz user didn't answer
 var right = 0;
 var wrong = 0;
-var timerCounter =10;
+var timerCounter =0;
 
 //define a funciton to generate non-repeating random number array
 function randomNumberArrayGen(num, length) {
@@ -143,7 +143,9 @@ function newGame() {
     right = 0;
     wrong = 0;
     quizCounter =0;
-    timerCounter =5;
+    timerCounter =10;
+    clearInterval(pointerInterval);
+    clearTimeout(pointerTimeOut);
     currentIndexArray = randomNumberArrayGen(10, 5);  //pick 5 out of 10 quiz Questions
     console.log(currentIndexArray);
     quizRender(triviaBank[currentIndexArray[quizCounter]]);
@@ -164,7 +166,7 @@ function quizRender(obj) {
         else if(prop != "Correct"){      //if key property isn't "Correct" index, print the information out. use this condition to avoid answer part showing
             var newSlot = $("<h4>");
             newSlot.attr("class","button");
-            newSlot.attr("value",prop);  //save the "key" index of the property into the value field for later judgement
+            newSlot.attr("data-value",prop);  //save the "key" index of the property into the value field for later judgement
             newSlot.html(prop +" : "+ obj[prop] + "<br>");
             console.log(obj[prop]);
             $("#quizContainer").append(newSlot);
@@ -178,12 +180,20 @@ function endingScreen(buttonClicked){
     // if(buttonClicked == triviaBank[currentIndexArray[quizCounter]].Correct){  //if user got the right answer
     if(buttonClicked == triviaBank[currentIndexArray[quizCounter]].Correct ){  //if user got the right answer
         $("#rightOrWrong").text("Right!");
-        $("#quizContainer").html("<img src='assets/images/catRule.jpg' alt = \"catpic\" >");
+        $("#quizContainer").html("<img src='assets/images/catRule.gif' alt = \"catpic\" >");
+        clearInterval(pointerInterval);
+        clearTimeout(pointerTimeOut);
+        pointerTimeOut = setTimeout(run,3000);
+        quizCounter++;  
     }
     else {
         $("#rightOrWrong").text("Wrong!");
         var index = triviaBank[currentIndexArray[quizCounter]].Correct;
         $("#quizContainer").html("<h2>Correct answer is: "+ triviaBank[currentIndexArray[quizCounter]][index]+ "</h2>");
+        clearInterval(pointerInterval);
+        clearTimeout(pointerTimeOut);
+        pointerTimeOut = setTimeout(run,3000);
+        quizCounter++; 
     }
 }
 
@@ -193,7 +203,7 @@ var pointerInterval;
 function run(){
     pointerInterval = setInterval(timer,1000);
     quizRender(triviaBank[currentIndexArray[quizCounter]]);
-    console.log("run:" + quizCounter)
+    console.log("run:" + quizCounter);
 }
 
 //define a timer to track the time
@@ -207,7 +217,7 @@ function timer(){
 
         clearTimeout(pointerTimeOut);  //clear last timeout event instance
         clearInterval(pointerInterval);  //pause the timer
-        timerCounter =6;
+        timerCounter =10;
         if(quizCounter<5){
             endingScreen();
             pointerTimeOut = setTimeout(run,3000);
@@ -228,7 +238,15 @@ function timer(){
 newGame(); //call a newgame session
 run();
 
- //set the timer countdown function to run
-// setTimeout(quizRender,8*1000);  // render nextquiz after 33 seconds
+$(document).on("click",".button",function(){
+    console.log("button clicked");
+    var v = $(this).data("value");
+    // console.log (v);
+    endingScreen(v);  // judge the click with the conditon inside endingScreen
+});
+
+$(document).on("click","#Restart",function(){
+    newGame();
+});
 
 
