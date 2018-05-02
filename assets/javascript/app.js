@@ -116,7 +116,11 @@ var triviaBank = [{
 }
 ]
 var currentIndexArray = []; // declare globe var to store current index array
-var counter =0; // initial the counter
+var quizCounter =0; // initial the quizCounter
+var unanswered = 0;  // check how many quiz user didn't answer
+var right = 0;
+var wrong = 0;
+var timerCounter =5;
 
 function randomNumberArrayGen(num, length) {
     var nArray = []; //declare a local nArray to hold the numbers
@@ -135,26 +139,30 @@ function randomNumberArrayGen(num, length) {
 //define a newGame function to call after ending condition meet
 function newGame() {
     // $("#quizContainer").text("");
-    counter =0;
+    unanswered = 0;  // check how many quiz user didn't answer
+    right = 0;
+    wrong = 0;
+    quizCounter =0;
     currentIndexArray = randomNumberArrayGen(10, 5);  //pick 5 out of 10 quiz Questions
     console.log(currentIndexArray);
-    quizRender(triviaBank[currentIndexArray[counter]]);
+    quizRender(triviaBank[currentIndexArray[quizCounter]]);
 }
-newGame();
+
 
 function quizRender(obj) {
+    $("#quizContainer").text("");       // initial the quizContainer session , otherwise new elements will keep appending to the old one
     for( var prop in obj){   //iterate through the trivia obj
         if(prop == "Q"){            //set the question field be one div above all other elements 
             var newSlot = $("<h4>");
             newSlot.attr("class","jumbotron question");
-            newSlot.attr("value",prop);  //save the "key" index of the property into the value field for later judgement
+            newSlot.attr("value",prop);  //save the "key" index of the property into the value field for later correct answer judgement use
             newSlot.html(prop +" : "+ obj[prop] + "<br>");
             console.log(obj[prop]);
             $("#quizContainer").append(newSlot);
         }
-        else if(prop != "Correct"){      //if key property not Correct: index print the information out. use this condition to avoid answer showing
+        else if(prop != "Correct"){      //if key property isn't "Correct" index, print the information out. use this condition to avoid answer part showing
             var newSlot = $("<h4>");
-            newSlot.attr("class"," button");
+            newSlot.attr("class","button");
             newSlot.attr("value",prop);  //save the "key" index of the property into the value field for later judgement
             newSlot.html(prop +" : "+ obj[prop] + "<br>");
             console.log(obj[prop]);
@@ -162,3 +170,23 @@ function quizRender(obj) {
         }
     }
 }
+
+//main session starts here
+newGame(); //call a newgame session
+
+
+
+function timer(){
+    console.log(timerCounter);
+    timerCounter--;
+    $("#timer").text(timerCounter);
+
+    if(timerCounter == 0){  // if time runs out render next quiz question.
+        quizCounter++;
+        unanswered ++;
+        quizRender(triviaBank[currentIndexArray[quizCounter]]); 
+        timerCounter =5;
+    }
+}
+setInterval(timer,1000);
+
