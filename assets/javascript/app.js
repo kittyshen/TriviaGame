@@ -122,6 +122,9 @@ var right = 0;
 var wrong = 0;
 var timerCounter =0;
 
+var pointerTimeOut;
+var pointerInterval;
+
 //define a funciton to generate non-repeating random number array
 function randomNumberArrayGen(num, length) {
     var nArray = []; //declare a local nArray to hold the numbers
@@ -144,16 +147,17 @@ function newGame() {
     wrong = 0;
     quizCounter =0;
     timerCounter =10;
-    clearInterval(pointerInterval);
-    clearTimeout(pointerTimeOut);
+    stopTimer();
+    stopInterval();
     currentIndexArray = randomNumberArrayGen(10, 5);  //pick 5 out of 10 quiz Questions
-    console.log(currentIndexArray);
+    // console.log(currentIndexArray);
     quizRender(triviaBank[currentIndexArray[quizCounter]]);
 }
 
 // define a function to render the quiz
 function quizRender(obj) {
     $("#quizContainer").text("");       // initial the quizContainer session , otherwise new elements will keep appending to the old one
+    $("#rightOrWrong").text(""); 
     for( var prop in obj){   //iterate through the trivia obj
         if(prop == "Q"){            //set the question field be one div above all other elements 
             var newSlot = $("<h4>");
@@ -176,29 +180,35 @@ function quizRender(obj) {
 
 //define a function to render ending condition
 function endingScreen(buttonClicked){
+    stopTimer();    //call those two to stop timer and interval process.
+    stopInterval();
     $("#quizContainer").text("");    // initial the quizContainer session , otherwise new elements will keep appending
+    if(quizCounter ==5 ){
+        newGame();
+        return;
+    }
     // if(buttonClicked == triviaBank[currentIndexArray[quizCounter]].Correct){  //if user got the right answer
     if(buttonClicked == triviaBank[currentIndexArray[quizCounter]].Correct ){  //if user got the right answer
         $("#rightOrWrong").text("Right!");
         $("#quizContainer").html("<img src='assets/images/catRule.gif' alt = \"catpic\" >");
-        clearInterval(pointerInterval);
-        clearTimeout(pointerTimeOut);
         pointerTimeOut = setTimeout(run,3000);
-        quizCounter++;  
+        right++;
     }
     else {
         $("#rightOrWrong").text("Wrong!");
         var index = triviaBank[currentIndexArray[quizCounter]].Correct;
         $("#quizContainer").html("<h2>Correct answer is: "+ triviaBank[currentIndexArray[quizCounter]][index]+ "</h2>");
-        clearInterval(pointerInterval);
-        clearTimeout(pointerTimeOut);
         pointerTimeOut = setTimeout(run,3000);
-        quizCounter++; 
+        wrong++;
     }
+    quizCounter++;  
+}
+function endGame(){
+    $("#quizContainer").html("");
+    $("#quizContainer").append("<h2>you got "+right+"/5 questions right.</h2>")
+    $("#quizContainer").append("<button id ='Restart'>Try Again?</button>");
 }
 
-var pointerTimeOut;
-var pointerInterval;
 
 function run(){
     pointerInterval = setInterval(timer,1000);
@@ -214,25 +224,32 @@ function timer(){
 
     if(timerCounter == 0){  // if time runs out render next quiz question.
         unanswered ++;
+        stopTimer();    //pause the timer
+        stopInterval(); //clear last timeout event instance
 
-        clearTimeout(pointerTimeOut);  //clear last timeout event instance
-        clearInterval(pointerInterval);  //pause the timer
         timerCounter =10;
         if(quizCounter<5){
             endingScreen();
             pointerTimeOut = setTimeout(run,3000);
             console.log("quiz:"+quizCounter); 
-            quizCounter++;  
+            // quizCounter++;  
 
         }
         else // if run out of quiz questions, render gameFinishScreen
         {
             console.log("end here:  "+quizCounter); 
-            $("#quizContainer").append("<button id ='Restart'>Try Again?</button>");
+            endGame();
         }
 
     }
 }
+function stopTimer(){
+    clearTimeout(pointerTimeOut);
+}
+function stopInterval(){
+    clearInterval(pointerInterval);
+}
+
 
 //main session starts here
 newGame(); //call a newgame session
