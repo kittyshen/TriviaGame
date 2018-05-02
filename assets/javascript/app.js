@@ -72,7 +72,7 @@ var triviaBank = [{
     B: "Kaboodle",
     C: "Kindle",
     D: "Kaggle",
-    Correct: "B"
+    Correct: "C"
 },
 {
     Q: "Outdoor-only cats live, on average, about:",
@@ -120,7 +120,7 @@ var quizCounter =0; // initial the quizCounter
 var unanswered = 0;  // check how many quiz user didn't answer
 var right = 0;
 var wrong = 0;
-var timerCounter =5;
+var timerCounter =10;
 
 //define a funciton to generate non-repeating random number array
 function randomNumberArrayGen(num, length) {
@@ -139,7 +139,6 @@ function randomNumberArrayGen(num, length) {
 
 //define a newGame function to call after ending condition meet
 function newGame() {
-    // $("#quizContainer").text("");
     unanswered = 0;  // check how many quiz user didn't answer
     right = 0;
     wrong = 0;
@@ -178,13 +177,23 @@ function endingScreen(buttonClicked){
     $("#quizContainer").text("");    // initial the quizContainer session , otherwise new elements will keep appending
     // if(buttonClicked == triviaBank[currentIndexArray[quizCounter]].Correct){  //if user got the right answer
     if(buttonClicked == triviaBank[currentIndexArray[quizCounter]].Correct ){  //if user got the right answer
-        $("#rightOrWrong").text = "Right!";
+        $("#rightOrWrong").text("Right!");
         $("#quizContainer").html("<img src='assets/images/catRule.jpg' alt = \"catpic\" >");
     }
     else {
-        $("#rightOrWrong").text = "Wrong!";
-        $("#quizContainer").html("Correct answer is: "+ triviaBank[currentIndexArray[quizCounter]].Correct);
+        $("#rightOrWrong").text("Wrong!");
+        var index = triviaBank[currentIndexArray[quizCounter]].Correct;
+        $("#quizContainer").html("<h2>Correct answer is: "+ triviaBank[currentIndexArray[quizCounter]][index]+ "</h2>");
     }
+}
+
+var pointerTimeOut;
+var pointerInterval;
+
+function run(){
+    pointerInterval = setInterval(timer,1000);
+    quizRender(triviaBank[currentIndexArray[quizCounter]]);
+    console.log("run:" + quizCounter)
 }
 
 //define a timer to track the time
@@ -194,19 +203,32 @@ function timer(){
     $("#timer").text(timerCounter);
 
     if(timerCounter == 0){  // if time runs out render next quiz question.
-        quizCounter++;
         unanswered ++;
-        quizRender(triviaBank[currentIndexArray[quizCounter]]); 
-        timerCounter =5;
-        endingScreen();
+
+        clearTimeout(pointerTimeOut);  //clear last timeout event instance
+        clearInterval(pointerInterval);  //pause the timer
+        timerCounter =6;
+        if(quizCounter<5){
+            endingScreen();
+            pointerTimeOut = setTimeout(run,3000);
+            console.log("quiz:"+quizCounter); 
+            quizCounter++;  
+
+        }
+        else // if run out of quiz questions, render gameFinishScreen
+        {
+            console.log("end here:  "+quizCounter); 
+            $("#quizContainer").append("<button id ='Restart'>Try Again?</button>");
+        }
+
     }
 }
 
 //main session starts here
 newGame(); //call a newgame session
+run();
 
+ //set the timer countdown function to run
+// setTimeout(quizRender,8*1000);  // render nextquiz after 33 seconds
 
-
-
-setInterval(timer,1000);
 
