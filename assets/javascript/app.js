@@ -122,6 +122,7 @@ var right = 0;
 var wrong = 0;
 var timerCounter =5;
 
+//define a funciton to generate non-repeating random number array
 function randomNumberArrayGen(num, length) {
     var nArray = []; //declare a local nArray to hold the numbers
     for (var i = 0; i < length; i++) {
@@ -143,12 +144,13 @@ function newGame() {
     right = 0;
     wrong = 0;
     quizCounter =0;
+    timerCounter =5;
     currentIndexArray = randomNumberArrayGen(10, 5);  //pick 5 out of 10 quiz Questions
     console.log(currentIndexArray);
     quizRender(triviaBank[currentIndexArray[quizCounter]]);
 }
 
-
+// define a function to render the quiz
 function quizRender(obj) {
     $("#quizContainer").text("");       // initial the quizContainer session , otherwise new elements will keep appending to the old one
     for( var prop in obj){   //iterate through the trivia obj
@@ -171,11 +173,21 @@ function quizRender(obj) {
     }
 }
 
-//main session starts here
-newGame(); //call a newgame session
+//define a function to render ending condition
+function endingScreen(buttonClicked){
+    $("#quizContainer").text("");    // initial the quizContainer session , otherwise new elements will keep appending
+    // if(buttonClicked == triviaBank[currentIndexArray[quizCounter]].Correct){  //if user got the right answer
+    if(buttonClicked == triviaBank[currentIndexArray[quizCounter]].Correct ){  //if user got the right answer
+        $("#rightOrWrong").text = "Right!";
+        $("#quizContainer").html("<img src='assets/images/catRule.jpg' alt = \"catpic\" >");
+    }
+    else {
+        $("#rightOrWrong").text = "Wrong!";
+        $("#quizContainer").html("Correct answer is: "+ triviaBank[currentIndexArray[quizCounter]].Correct);
+    }
+}
 
-
-
+//define a timer to track the time
 function timer(){
     console.log(timerCounter);
     timerCounter--;
@@ -186,7 +198,15 @@ function timer(){
         unanswered ++;
         quizRender(triviaBank[currentIndexArray[quizCounter]]); 
         timerCounter =5;
+        endingScreen();
     }
 }
+
+//main session starts here
+newGame(); //call a newgame session
+
+
+
+
 setInterval(timer,1000);
 

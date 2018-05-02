@@ -29,11 +29,11 @@ h4{
     font-size:1.7em ;
     color:#66bce4;
 }
-/* img{
-    max-block-size: 230px;
+img{
+    max-block-size: 200px;
     float:left;
     padding-right:1em;
-} */
+}
 .footer{
     clear: both;
     height:80px;
