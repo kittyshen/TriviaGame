@@ -26,7 +26,7 @@ h2{
     color:#66bce4;
 }
 h4{
-    font-size:1.5em ;
+    font-size:1.7em ;
     color:#66bce4;
 }
 /* img{
@@ -61,16 +61,30 @@ h4{
     margin-top: 1em;
     background-color:rgba(211, 211, 211, 0.89) !important;
 }
-.col-md-4 > .jumbotron {
-    height:330px;
-}
+
 .col-sm-12 > .jumbotron {
-    height:100px;
+    height:100%;
 }
 .jumbotron {
-    padding:0.5em;
+    padding:0.8em;
+    padding-bottom:1em; 
     margin-bottom:0.3em;
-    box-shadow: 0.11em 0.11em rgb(146, 146, 146);
+    box-shadow: 0.05em 0.05em rgb(146, 146, 146);
+}
+.question{
+    background-color:dimgrey;
+    color:white;
+}
+.button{
+    padding:0.4em;
+    margin:0.5em;
+    background-color: white;
+    box-shadow: 0.05em 0.05em rgb(146, 146, 146);
+}
+.button:hover{
+    background-color: rgb(213, 171, 213);
+    border: 3px dotted dimgrey;
+    color:dimgrey;
 }
 .container{
     min-height:100%;
@@ -83,7 +97,7 @@ h4{
 
 @media(max-width:578px) {
     .jumbotron{
-        max-width: 50% !important;
+        /* max-width: 50% !important; */
         margin-bottom:0.2em;
     }
     h2{

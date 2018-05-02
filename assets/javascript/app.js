@@ -116,7 +116,7 @@ var triviaBank = [{
 }
 ]
 var currentIndexArray = []; // declare globe var to store current index array
-
+var counter =0; // initial the counter
 
 function randomNumberArrayGen(num, length) {
     var nArray = []; //declare a local nArray to hold the numbers
@@ -125,6 +125,7 @@ function randomNumberArrayGen(num, length) {
         if (nArray.indexOf(x) == -1) {  // if x not in the nArray
             nArray.push(x);
         }
+        else i--;  // forget this could cause length of array shorter than required 
     }
     return nArray;
 }
@@ -134,11 +135,30 @@ function randomNumberArrayGen(num, length) {
 //define a newGame function to call after ending condition meet
 function newGame() {
     // $("#quizContainer").text("");
-    currentIndexArray = randomNumberArrayGen(10, 5);  //pick 5 out of 10 
-    renderQuestion(triviaBank[currentIndexArray[0]]);
+    counter =0;
+    currentIndexArray = randomNumberArrayGen(10, 5);  //pick 5 out of 10 quiz Questions
+    console.log(currentIndexArray);
+    quizRender(triviaBank[currentIndexArray[counter]]);
 }
 newGame();
 
-function renderQuestion() {
-
+function quizRender(obj) {
+    for( var prop in obj){   //iterate through the trivia obj
+        if(prop == "Q"){            //set the question field be one div above all other elements 
+            var newSlot = $("<h4>");
+            newSlot.attr("class","jumbotron question");
+            newSlot.attr("value",prop);  //save the "key" index of the property into the value field for later judgement
+            newSlot.html(prop +" : "+ obj[prop] + "<br>");
+            console.log(obj[prop]);
+            $("#quizContainer").append(newSlot);
+        }
+        else if(prop != "Correct"){      //if key property not Correct: index print the information out. use this condition to avoid answer showing
+            var newSlot = $("<h4>");
+            newSlot.attr("class"," button");
+            newSlot.attr("value",prop);  //save the "key" index of the property into the value field for later judgement
+            newSlot.html(prop +" : "+ obj[prop] + "<br>");
+            console.log(obj[prop]);
+            $("#quizContainer").append(newSlot);
+        }
+    }
 }
