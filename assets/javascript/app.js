@@ -1,4 +1,4 @@
-/*
+/* 
 # Cat TriviaGame
 Pseudocode
 Step1 define an array of objects triviaBank =[{Q:...,A:...,B:...,C:...,D:...,Correct:...},...]
@@ -125,6 +125,7 @@ var timerCounter =0;
 var pointerTimeOut;
 var pointerInterval;
 
+
 //define a funciton to generate non-repeating random number array
 function randomNumberArrayGen(num, length) {
     var nArray = []; //declare a local nArray to hold the numbers
@@ -151,8 +152,7 @@ function newGame() {
     stopInterval();
     currentIndexArray = randomNumberArrayGen(10, 5);  //pick 5 out of 10 quiz Questions
     // console.log(currentIndexArray);
-    run();  // start to run the game
-    // quizRender(triviaBank[currentIndexArray[quizCounter]]);
+    run();  // start to run the game to render the quiz session and start the counterdown timer
 }
 
 // define a function to render the quiz
@@ -182,7 +182,7 @@ function quizRender(obj) {
 //define a function to render ending condition
 function endingScreen(buttonClicked){
     stopTimer();    //call those two to stop timer and interval process.
-    stopInterval();
+    stopInterval();  //Why not working here? why?why?why?
     $("#quizContainer").text("");    // initial the quizContainer session , otherwise new elements will keep appending
     if(quizCounter ==5 ){
         newGame();
@@ -191,7 +191,7 @@ function endingScreen(buttonClicked){
     // if(buttonClicked == triviaBank[currentIndexArray[quizCounter]].Correct){  //if user got the right answer
     if(buttonClicked == triviaBank[currentIndexArray[quizCounter]].Correct ){  //if user got the right answer
         $("#rightOrWrong").text("Right!");
-        $("#quizContainer").html("<div class = 'imgCenter'style ='margin-left: auto; margin-right: auto; display: block; width: 50%;'><img src='assets/images/catRule.gif' alt = \"catpic\" ></div>");
+        $("#quizContainer").html("<div class ='imgCenter'><img src='assets/images/catRule.gif' alt = \"catpic\" ></div>");
         pointerTimeOut = setTimeout(run,3000);
         right++;
     }
@@ -213,7 +213,7 @@ function endGame(){
 
 
 function run(){
-    stopInterval();  //is this the key causing the problem???????!!!!!!!
+    stopInterval();  //is this the key causing the problem???????!!!! already stoped in ending screen why need to call this again. most confusing part of this assignment.  Why why why???
     timerCounter =15 ; // need this to reset timer to 15s after each question.
     if(quizCounter ==5){  // to stop timer keep looping to next session after gameending < HERERRR !!!!
         endGame();
@@ -234,8 +234,6 @@ function timer(){
         unanswered ++;
         stopTimer();    //clear last timeout event instance
         // stopInterval(); 
-    
-        timerCounter =20;
         if(quizCounter<5){
             endingScreen();
             pointerTimeOut = setTimeout(run,3000);
@@ -259,19 +257,21 @@ function stopInterval(){
 
 
 //main session starts here
-newGame(); //call a newgame session
-run();
 
-$(document).on("click",".button",function(){
-    console.log("button clicked");
-    var v = $(this).data("value");
-    // console.log (v);
-    endingScreen(v);  // judge the click with the conditon inside endingScreen
-});
+$(document).ready(function(){
+    newGame(); //call a newgame session
+    // run(); 
 
-$(document).on("click","#Restart",function(){
-    newGame();
-    run();      // forget this will causing the timer not starting after a new game session
-});
+    $(document).on("click",".button",function(){
+        console.log("button clicked");
+        var v = $(this).data("value");
+        // console.log (v);
+        endingScreen(v);  // judge the click with the conditon inside endingScreen
+    });
 
+    $(document).on("click","#Restart",function(){
+        newGame();
+    });
+
+})
 
