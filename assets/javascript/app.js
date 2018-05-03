@@ -146,12 +146,13 @@ function newGame() {
     right = 0;
     wrong = 0;
     quizCounter =0;
-    timerCounter =10;
+    timerCounter =20;
     stopTimer();
     stopInterval();
     currentIndexArray = randomNumberArrayGen(10, 5);  //pick 5 out of 10 quiz Questions
     // console.log(currentIndexArray);
-    quizRender(triviaBank[currentIndexArray[quizCounter]]);
+    run();  // start to run the game
+    // quizRender(triviaBank[currentIndexArray[quizCounter]]);
 }
 
 // define a function to render the quiz
@@ -190,7 +191,7 @@ function endingScreen(buttonClicked){
     // if(buttonClicked == triviaBank[currentIndexArray[quizCounter]].Correct){  //if user got the right answer
     if(buttonClicked == triviaBank[currentIndexArray[quizCounter]].Correct ){  //if user got the right answer
         $("#rightOrWrong").text("Right!");
-        $("#quizContainer").html("<div style =\"margin-left: auto; margin-right: auto;text-align: center; display: table-cell;\"><img src='assets/images/catRule.gif' alt = \"catpic\" ></div>");
+        $("#quizContainer").html("<div class = 'imgCenter'style ='margin-left: auto; margin-right: auto; display: block; width: 50%;'><img src='assets/images/catRule.gif' alt = \"catpic\" ></div>");
         pointerTimeOut = setTimeout(run,3000);
         right++;
     }
@@ -204,17 +205,22 @@ function endingScreen(buttonClicked){
     quizCounter++;  
 }
 function endGame(){
+    stopInterval(); 
     $("#quizContainer").html("");
-    $("#quizContainer").append("<h2>you got "+right+"/5 questions right.</h2>")
-    $("#quizContainer").append("<button id ='Restart'>Try Again?</button>");
+    $("#quizContainer").append("<h2 class = 'text-center' >you got "+right+"/5 questions right.</h2>")
+    $("#quizContainer").append("<div class= 'jubotron text-center'><button class= 'badge-pill badge-secondary'id ='Restart'>Try Again?</button></div>");
 }
 
 
 function run(){
     stopInterval();  //is this the key causing the problem???????!!!!!!!
+    timerCounter =15 ; // need this to reset timer to 15s after each question.
+    if(quizCounter ==5){  // to stop timer keep looping to next session after gameending < HERERRR !!!!
+        endGame();
+        return;
+    }
     pointerInterval = setInterval(timer,1000);
     console.log("run:" + quizCounter);
-
     quizRender(triviaBank[currentIndexArray[quizCounter]]);
     // console.log("run:" + quizCounter);
 }
@@ -224,12 +230,12 @@ function timer(){
     console.log(timerCounter);
     timerCounter--;
     $("#timer").text(timerCounter);
-    if(timerCounter == 0){  // if time runs out render next quiz question.
+    if(timerCounter <= 0){  // if time runs out render next quiz question.
         unanswered ++;
-        stopTimer();    //pause the timer
-        stopInterval(); //clear last timeout event instance
+        stopTimer();    //clear last timeout event instance
+        // stopInterval(); 
     
-        timerCounter =10;
+        timerCounter =20;
         if(quizCounter<5){
             endingScreen();
             pointerTimeOut = setTimeout(run,3000);
